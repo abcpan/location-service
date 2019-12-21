@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.location.dao.LocationMapper">
+    <resultMap id="LocationMap" type="Location">
+        <id property="code" column="code"/>
+        <result property="countyName" column="county_name"/>
+        <result property="cityCode" column="city_code"/>
+        <result property="cityName" column="city_name"/>
+        <result property="provinceCode" column="province_code"/>
+        <result property="provinceName" column="province_name"/>
+        <result property="type" column="type"/>
+    </resultMap>
+    <sql id="locationField">code,county_name,city_code,city_name,province_code,province_name,type</sql>
+    <!--查询-->
+    <select id="selectLocationByKeys" resultMap="LocationMap">
+        select <include refid="locationField"/> from tb_location where code in
+        <foreach collection="codes" open="(" close=")"  separator=","  item="item"  index="index">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectLocationByName" resultMap="LocationMap">
+        <bind name="namePattern" value="'%' + name + '%'"/>
+        select <include refid="locationField"/> from tb_location
+        where county_name like #{namePattern} or city_name like #{namePattern} or province_name like #{namePattern}
+    </select>
+</mapper>
