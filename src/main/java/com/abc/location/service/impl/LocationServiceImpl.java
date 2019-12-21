@@ -40,7 +40,6 @@ public class LocationServiceImpl implements LocationService {
         }).collect(Collectors.toList());
         return CommonResponse.createData(result);
     }
-
     /**
      * 分类code 码
      * @param locationCode
@@ -68,9 +67,9 @@ public class LocationServiceImpl implements LocationService {
         if(name == null){
             return CommonResponse.createError(LocationResultEum.PARAM_ILLEGAL.getCode(),LocationResultEum.PARAM_ILLEGAL.getMsg());
         }
-        List<Location> reusltList = locationMapper.selectLocationByName(name);
+        List<Location> resultList = locationMapper.selectLocationByName(name);
         List<Object> ret = new ArrayList<>();
-        for(Location location:reusltList){
+        for(Location location:resultList){
             Integer code = location.getCode();
             CommonResponse result = this.selectLocationByCode(code);
             ret.add(result.getData());
