@@ -8,6 +8,5 @@ import com.abc.location.common.CommonResponse;
  * @date 2019/12/20 11:15
  */
 public interface LocationService {
-  CommonResponse selectLocationByCode(Integer code);
-  CommonResponse selectLocationByName(String name);
+  CommonResponse selectLocation(Integer code,String name);
 }
