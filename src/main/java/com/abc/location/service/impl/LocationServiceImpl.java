@@ -22,11 +22,12 @@ import java.util.stream.Stream;
  * @date 2019/12/20 11:16
  */
 @Service
-@CacheConfig(cacheNames = "LOCATION_CACHE")
+@CacheConfig(cacheNames = {"LOCATION_CACHE"})
 public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationMapper locationMapper;
 
+    @Cacheable(key="#code + #name")
     public CommonResponse selectLocation(Integer code,String name){
         if(code !=null){
             return this.selectLocationByCode(code);
@@ -41,6 +42,7 @@ public class LocationServiceImpl implements LocationService {
      * @param code
      * @return
      */
+
     public CommonResponse selectLocationByCode(final Integer code){
         Set<Integer> set = this.groupCode(code);
         List<Location> locations = locationMapper.selectLocationByKeys(set);
