@@ -28,7 +28,7 @@ class LocationServiceImplTest {
   private LocationService locationService;
   @Ignore
   void selectLocationByCode() {
-    CommonResponse response = locationService.selectLocationByCode(511700);
+    CommonResponse response = locationService.selectLocation(511700,null);
     List<Location> list =( List<Location>) response.getData();
     for(Location location:list){
       System.out.println("--->");

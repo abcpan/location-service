@@ -20,14 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
   @Autowired
   private LocationService locationService;
-  @GetMapping("/code.query")
-  public CommonResponse selectLocationByCode(@RequestParam("locationCode") Integer locationCode){
-    log.info("/location/code.query--->{} ",locationCode);
-    return locationService.selectLocationByCode(locationCode);
-  }
-  @GetMapping("/name.query")
-  public CommonResponse selectLocationByName(@RequestParam("locationName")String locationName){
-    log.info("/location/name.query--->{} ",locationName);
-    return locationService.selectLocationByName(locationName);
+  @GetMapping("/query")
+  public CommonResponse selectLocationByCode(
+          @RequestParam(name="code",required = false) Integer code,
+          @RequestParam(name="name",required = false) String name){
+    return locationService.selectLocation(code,name);
   }
 }
