@@ -6,6 +6,7 @@ import com.abc.location.dto.LocationDTO;
 import com.abc.location.enums.LocationResultEum;
 import com.abc.location.model.Location;
 import com.abc.location.service.LocationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,16 +24,20 @@ import java.util.stream.Stream;
  */
 @Service
 @CacheConfig(cacheNames = {"LOCATION_CACHE"})
+@Slf4j
 public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationMapper locationMapper;
 
-    @Cacheable(key="#code + #name")
+    @Cacheable(key="#code + '_' + #name")
     public CommonResponse selectLocation(Integer code,String name){
+
         if(code !=null){
+            log.info("query from database by code={}",code);
             return this.selectLocationByCode(code);
         }
         if(!StringUtils.isEmpty(name)){
+            log.info("query from database by name={}",name);
             return this.selectLocationByName(name);
         }
         return CommonResponse.createError(LocationResultEum.PARAM_ILLEGAL.getCode(),LocationResultEum.PARAM_ILLEGAL.getMsg());
@@ -46,8 +51,9 @@ public class LocationServiceImpl implements LocationService {
     private CommonResponse selectLocationByCode(final Integer code){
         Set<Integer> set = this.groupCode(code);
         List<Location> locations = locationMapper.selectLocationByKeys(set);
-        Collections.sort(locations);
-        List<LocationDTO> result =  locations.stream().map(location->{
+        List<LocationDTO> result =  locations.stream()
+            .sorted()
+            .map(location->{
             LocationDTO locationDTO = new LocationDTO();
             Stream<String> stream= Arrays.asList(location.getProvinceName(),location.getCityName(),location.getCountyName()).stream();
             String finalName = stream.filter(name-> !StringUtils.isEmpty(name)).collect(Collectors.joining());
@@ -57,12 +63,12 @@ public class LocationServiceImpl implements LocationService {
         }).collect(Collectors.toList());
         return CommonResponse.createData(result);
     }
+
     /**
      * 分类code 码
      * @param code
      * @return
      */
-
     private Set<Integer> groupCode(final Integer code){
         Set<Integer> set = new HashSet<>();
         Integer provinceCode = code/10000;
@@ -79,9 +85,6 @@ public class LocationServiceImpl implements LocationService {
      * @return
      */
     private CommonResponse selectLocationByName(String name){
-        if(name == null){
-            return CommonResponse.createError(LocationResultEum.PARAM_ILLEGAL.getCode(),LocationResultEum.PARAM_ILLEGAL.getMsg());
-        }
         List<Location> resultList = locationMapper.selectLocationByName(name);
         List<Object> ret = new ArrayList<>();
         for(Location location:resultList){
