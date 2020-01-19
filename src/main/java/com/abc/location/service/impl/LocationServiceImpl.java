@@ -43,7 +43,7 @@ public class LocationServiceImpl implements LocationService {
      * @return
      */
 
-    public CommonResponse selectLocationByCode(final Integer code){
+    private CommonResponse selectLocationByCode(final Integer code){
         Set<Integer> set = this.groupCode(code);
         List<Location> locations = locationMapper.selectLocationByKeys(set);
         Collections.sort(locations);
@@ -63,7 +63,7 @@ public class LocationServiceImpl implements LocationService {
      * @return
      */
 
-    public Set<Integer> groupCode(final Integer code){
+    private Set<Integer> groupCode(final Integer code){
         Set<Integer> set = new HashSet<>();
         Integer provinceCode = code/10000;
         set.add(provinceCode*10000);
@@ -78,7 +78,7 @@ public class LocationServiceImpl implements LocationService {
      * @param name
      * @return
      */
-    public CommonResponse selectLocationByName(String name){
+    private CommonResponse selectLocationByName(String name){
         if(name == null){
             return CommonResponse.createError(LocationResultEum.PARAM_ILLEGAL.getCode(),LocationResultEum.PARAM_ILLEGAL.getMsg());
         }
