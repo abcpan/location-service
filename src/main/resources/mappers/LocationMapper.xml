@@ -20,7 +20,7 @@
         </foreach>
     </select>
     <select id="selectLocationByName" resultMap="LocationMap">
-        <bind name="namePattern" value="'%' + name + '%'"/>
+        <bind name="namePattern" value="name + '%'"/>
         select <include refid="locationField"/> from tb_location
         where county_name like #{namePattern} or city_name like #{namePattern} or province_name like #{namePattern}
     </select>
