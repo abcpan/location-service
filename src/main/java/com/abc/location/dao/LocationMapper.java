@@ -4,7 +4,6 @@ import com.abc.location.model.Location;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,5 +15,5 @@ import java.util.Set;
 @Mapper
 public interface LocationMapper {
     List<Location> selectLocationByKeys(@Param("codes") Set<Integer> codes);
-    List<Location> selectLocationByName(@Param("name") String name);
+    List<Location> selectLocationByName(@Param("name") String name) ;
 }

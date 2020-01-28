@@ -30,9 +30,9 @@ public class LocationServiceImpl implements LocationService {
     private LocationMapper locationMapper;
 
     @Cacheable(key="#code + '_' + #name")
-    public CommonResponse selectLocation(Integer code,String name){
+    public CommonResponse selectLocation(Integer code,String name) {
 
-        if(code !=null){
+        if(code != null){
             log.info("query from database by code={}",code);
             return this.selectLocationByCode(code);
         }

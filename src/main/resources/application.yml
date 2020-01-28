@@ -24,8 +24,13 @@ spring:
     redis:
       time-to-live: 1800000
 mybatis:
-  config-location: classpath:mybatis-config.xml
   mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.abc.location.model
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 25
+    cache-enabled: true
 ---
 spring:
   profiles: dev
