@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum LocationResultEum {
+  SERVER_ERROR(-1,"服务器错误"),
   PARAM_ILLEGAL(10001,"参数非法");
   private int code;
   private String msg;
