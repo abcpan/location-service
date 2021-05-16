@@ -16,21 +16,26 @@ import java.io.Serializable;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommonResponse<T> implements Serializable {
-    private static final Integer OK_CODE = 0;
+    public static final int OK_CODE = 0;
+    public static final  int ERROR_CODE = -1;
     private int code;
     private String msg;
     private T data;
+
     public CommonResponse(int code ,String msg){
         this.code = code;
         this.msg = msg;
     }
+
     public CommonResponse(int code,T data){
         this.code = code;
         this.data = data;
     }
+
     public CommonResponse(int code){
         this.code = code;
     }
+
     @JsonIgnore
     public boolean isOk(){
         return this.code == OK_CODE;
