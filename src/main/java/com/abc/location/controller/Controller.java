@@ -1,13 +1,14 @@
 package com.abc.location.controller;
 
+import com.abc.location.annotation.Log;
 import com.abc.location.common.CommonResponse;
 import com.abc.location.service.LocationService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @author abcpan
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/location")
-@Slf4j
 public class Controller {
-  @Autowired
+  @Resource
   private LocationService locationService;
 
   @GetMapping("/query")
+  @Log()
   public CommonResponse selectLocationByCode(
       @RequestParam(name = "code", required = false) Integer code,
       @RequestParam(name = "name", required = false, defaultValue = "") String name) {

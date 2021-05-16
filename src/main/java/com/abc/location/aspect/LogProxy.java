@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.descriptor.web.ContextHandler;
 import org.apache.tomcat.util.http.fileupload.RequestContext;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -14,6 +15,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author abc.pan
@@ -24,18 +28,24 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 @Aspect
 @Slf4j
-public class AspectHandler<T> {
+public class LogProxy<T> {
   @Pointcut("within(com.abc.location.controller.*)")
   private void point(){}
 
   /**
    * 打印请求信息
    */
-  @Before("point() && args(code,name)")
-  public void handleLog(Integer code,String name){
+  @Before("point() && @annotation(com.abc.location.annotation.Log)")
+  public void doLog(JoinPoint joinPoint){
     ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
     HttpServletRequest request = attributes.getRequest();
+    String httpMethod = request.getMethod().toUpperCase();
     String path = request.getServletPath();
-    log.info("request from ===>{},the param is code===>{},name===>{}",path,code,name);
+
+    Object[] args = joinPoint.getArgs();
+    String methodName = joinPoint.getSignature().getDeclaringTypeName() + "." +joinPoint.getSignature().getName();
+
+    log.info("{} {}, {},{}",httpMethod, path,methodName, args);
   }
+
 }
