@@ -1,20 +1,15 @@
 package com.abc.location.service.impl;
 
 import com.abc.location.common.CommonResponse;
-import com.abc.location.model.Location;
+import com.abc.location.pojo.Location;
 import com.abc.location.service.LocationService;
-import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.junit.Ignore;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author abcpan
@@ -32,7 +27,6 @@ class LocationServiceImplTest {
     List<Location> list =( List<Location>) response.getData();
     for(Location location:list){
       System.out.println("--->");
-      System.out.println(location.getCityName());
     }
   }
 }

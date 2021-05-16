@@ -1,7 +1,7 @@
 package com.abc.location.exceptions;
 
 import com.abc.location.common.CommonResponse;
-import com.abc.location.enums.LocationResultEum;
+import com.abc.location.consts.ResultMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
   public CommonResponse handleAll(HttpServletRequest request,Exception e){
     String path = request.getServletPath();
     log.warn("path==>{} occur a exception==>{}",path,e.getMessage());
-    return CommonResponse.createError(LocationResultEum.SERVER_ERROR.getCode(),LocationResultEum.SERVER_ERROR.getMsg());
+    e.printStackTrace();
+    return CommonResponse.createError(CommonResponse.ERROR_CODE, ResultMsg.SERVER_ERROR_MSG);
   }
 }
