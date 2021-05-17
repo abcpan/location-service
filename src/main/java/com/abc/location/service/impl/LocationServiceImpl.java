@@ -80,7 +80,13 @@ public class LocationServiceImpl implements LocationService {
         return CommonResponse.createData(result);
     }
 
-    public List<LocationVo> getChildren(Integer parentCode, List<Location> dataSource) {
+  /**
+   * 递归查询子元素
+   * @param parentCode
+   * @param dataSource
+   * @return
+   */
+    private List<LocationVo> getChildren(Integer parentCode, List<Location> dataSource) {
         return dataSource
             .stream()
             .parallel()
@@ -109,7 +115,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     /**
-     *
+     * 返回查询结果链路
      * @param code
      * @param family
      * @return
