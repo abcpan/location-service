@@ -54,7 +54,7 @@ public class LogProxy<T> {
     }catch (Exception e) {
       log.info(e.getMessage());
     }
-    log.info("response: {}", result);
+    //log.info("response: {}", result);
   }
 
 }
