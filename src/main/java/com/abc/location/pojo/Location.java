@@ -1,7 +1,6 @@
 package com.abc.location.pojo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 /**
  * @author abcpan

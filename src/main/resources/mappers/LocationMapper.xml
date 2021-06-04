@@ -4,15 +4,15 @@
 <mapper namespace="com.abc.location.dao.LocationMapper">
     <sql id="locationField">code,name,type, parent_code</sql>
     <!--查询-->
-    <select id="selectLocationByKey" resultType="com.abc.location.pojo.Location">
+    <select id="selectLocationByKey" resultType="Location">
         select <include refid="locationField"/> from tb_location where code = #{code}
     </select>
-    <select id="selectLocationByName" resultType="com.abc.location.pojo.Location">
+    <select id="selectLocationByName" resultType="Location">
         <bind name="namePattern" value="name + '%'"/>
         select <include refid="locationField"/> from tb_location where name like #{namePattern}
     </select>
 
-    <select id="selectLocation" resultType="com.abc.location.pojo.Location">
+    <select id="selectLocation" resultType="Location">
         select <include refid="locationField"/> from tb_location
     </select>
 </mapper>
