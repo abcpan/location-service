@@ -89,7 +89,6 @@ public class LocationServiceImpl implements LocationService {
     private List<LocationVo> getChildren(Integer parentCode, List<Location> dataSource) {
         return dataSource
             .stream()
-            .parallel()
             .filter(item -> parentCode.equals(item.getParentCode()) )
             .map(location -> {
                 LocationVo vo = new LocationVo();

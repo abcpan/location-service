@@ -17,10 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+  @ExceptionHandler(FieldException.class)
+  public CommonResponse handleFieldError(HttpServletRequest request,Exception e){
+    e.printStackTrace();
+    return CommonResponse.createError(CommonResponse.ERROR_CODE, ResultMsg.PARAM_ERROR_MSG);
+  }
+
   @ExceptionHandler(Exception.class)
   public CommonResponse handleAll(HttpServletRequest request,Exception e){
-    String path = request.getServletPath();
-    log.warn("path==>{} occur a exception==>{}",path,e.getMessage());
     e.printStackTrace();
     return CommonResponse.createError(CommonResponse.ERROR_CODE, ResultMsg.SERVER_ERROR_MSG);
   }

@@ -22,16 +22,17 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 @Aspect
 @Slf4j
-public class LogProxy<T> {
+public class LogProxy {
 
   private static final  ObjectMapper mapper = new ObjectMapper();
+
   @Pointcut("within(com.abc.location.controller.*) && @annotation(com.abc.location.annotation.Log)")
-  private void point(){}
+  private void logPoint(){}
 
   /**
    * 打印请求信息
    */
-  @Before("point()")
+  @Before("logPoint()")
   public void doBeforeLog(JoinPoint joinPoint){
     ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
     HttpServletRequest request = attributes.getRequest();
@@ -46,7 +47,7 @@ public class LogProxy<T> {
   }
 
 
-  @AfterReturning(value = "point()", returning = "response")
+  @AfterReturning(value = "logPoint()", returning = "response")
   public void doAfterLog(CommonResponse response){
     String result = "";
     try{

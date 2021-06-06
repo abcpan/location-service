@@ -1,0 +1,19 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: location-service
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOS_HOST:47.108.146.128:8848}
+        namespace: ${ENV_TAG:0155287c-a915-40fc-a442-d677a60d88bf}
+        file-extension: yaml
+      discovery:
+        server-addr: ${NACOS_HOST:47.108.146.128:8848}
+        namespace: ${ENV_TAG:0155287c-a915-40fc-a442-d677a60d88bf}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

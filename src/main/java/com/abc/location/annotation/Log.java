@@ -8,8 +8,8 @@ import java.lang.annotation.*;
  * @date 2021/5/16 6:41 下午
  */
 
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
 @Documented
 public @interface Log {
   String value() default "";
