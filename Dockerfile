@@ -12,22 +12,21 @@ FROM xiehaijun/jdk11
 
 WORKDIR /
 
-LABEL author="abcpan"\
-      email="1663071425@qq.com"\
-      version="v1.0.0"
+LABEL author="abcpan" \
+      email="1663071425@qq.com" \
+      version="v1.0.1"
 
 COPY --from=build_java /app/target/*.jar /app.jar
 
-ARG ENV_TYPE
-ENV ENV_TYPE=${ENV_TYPE:-prod}
+ARG ENV_TAG
+ARG NACOS_HOST
+ENV ENV_TAG=$ENV_TAG
+ENV NACOS_HOST=$NACOS_HOST
 VOLUME ["/temp"]
 
-ENV MYSQL_HOST=127.0.0.1
-ENV REDIS_HOST=127.0.0.1
-
-RUN ["echo", "mysql host:${MYSQL_HOST}, redis host: ${REDIS_HOST}, will running with ${ENV_TYPE} mode"]
+CMD ["sh", "-c","echo", "ENV_TAG: ${ENV_TAG}", "NACOS_HOST:${NACOS_HOST}"]
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","/app.jar","--spring.profiles.active=${ENV_TYPE}"]
+ENTRYPOINT ["java","-jar","/app.jar"]
 
