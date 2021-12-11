@@ -2,6 +2,7 @@ package com.abc.location.service.impl;
 
 import com.abc.location.common.CommonResponse;
 import com.abc.location.dao.LocationMapper;
+import com.abc.location.utils.EqualUtil;
 import com.abc.location.vo.LocationVo;
 import com.abc.location.pojo.Location;
 import com.abc.location.service.LocationService;
@@ -69,31 +70,22 @@ public class LocationServiceImpl implements LocationService {
      */
     public CommonResponse selectAll() {
         List<Location> dataSource = locationMapper.selectLocation();
-        List<LocationVo> result = dataSource.stream()
-            .filter(item -> item.getParentCode() == null)
-            .map(location -> {
-                LocationVo vo = new LocationVo();
-                BeanUtils.copyProperties(location, vo);
-                vo.setChildren(this.getChildren(location.getCode(), dataSource));
-                return vo;
-            }).collect(Collectors.toList());
+        List<LocationVo> result =  this.findListByParentCode(null, dataSource);
         return CommonResponse.createData(result);
     }
 
   /**
    * 递归查询子元素
-   * @param parentCode
-   * @param dataSource
    * @return
    */
-    private List<LocationVo> getChildren(Integer parentCode, List<Location> dataSource) {
+    private List<LocationVo> findListByParentCode(Integer parentCode, List<Location> dataSource) {
         return dataSource
             .stream()
-            .filter(item -> parentCode.equals(item.getParentCode()) )
+            .filter(item -> EqualUtil.isEqual(parentCode, item.getParentCode()))
             .map(location -> {
                 LocationVo vo = new LocationVo();
                 BeanUtils.copyProperties(location, vo);
-                vo.setChildren(this.getChildren(location.getCode(), dataSource));
+                vo.setChildren(this.findListByParentCode(location.getCode(), dataSource));
                 return vo;
             })
             .collect(Collectors.toList());
@@ -102,7 +94,6 @@ public class LocationServiceImpl implements LocationService {
 
     /**
      * 对结果进行级联
-     * @param locationCode
      * @return
      */
     private LocationVo getCascade(Integer locationCode) {
@@ -115,7 +106,6 @@ public class LocationServiceImpl implements LocationService {
 
     /**
      * 返回查询结果链路
-     * @param code
      * @param family
      * @return
      */
