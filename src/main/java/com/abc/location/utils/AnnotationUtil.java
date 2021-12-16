@@ -2,8 +2,6 @@ package com.abc.location.utils;
 
 import com.abc.location.annotation.Log;
 import org.aspectj.lang.JoinPoint;
-
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
