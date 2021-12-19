@@ -48,7 +48,8 @@ public class LocationServiceImpl implements LocationService {
 
     private CommonResponse selectLocationByCode(final Integer code){
        LocationVo ret = this.getCascade(code);
-       return CommonResponse.createData(List.of(ret));
+       List<LocationVo> data = ret == null ? new ArrayList<>() : List.of(ret);
+       return CommonResponse.createData(data);
     }
 
 
@@ -97,30 +98,30 @@ public class LocationServiceImpl implements LocationService {
      * @return
      */
     private LocationVo getCascade(Integer locationCode) {
-      LinkedList<LocationVo> result = this.getLocation(locationCode, null);
-       for(int i = 0; i < result.size() - 1; ++i) {
+      LinkedList<LocationVo> result = new LinkedList();
+      this.collectLocationVo(locationCode, result);
+      for(int i = 0; i < result.size() - 1; ++i) {
            result.get(i).getChildren().add(result.get(i+1));
-       }
-       return result.get(0);
+      }
+      return result.isEmpty() ? null: result.get(0);
     }
 
     /**
-     * 返回查询结果链路
+     * 📱收集链路
      * @param family
-     * @return
      */
-    public LinkedList<LocationVo> getLocation(Integer code, LinkedList<LocationVo> family) {
+    public void collectLocationVo(Integer code, LinkedList<LocationVo> family) {
         Location location = locationMapper.selectLocationByKey(code);
+        if(location == null) {
+          return;
+        }
         LocationVo locationVo = new LocationVo();
         BeanUtils.copyProperties(location, locationVo);
-        if(family == null) {
-            family = new LinkedList<>();
-        }
+
         family.addFirst(locationVo);
         Integer parentCode = location.getParentCode();
         if(parentCode != null) {
-            this.getLocation(parentCode, family);
+            this.collectLocationVo(parentCode, family);
         }
-        return family;
     }
 }
